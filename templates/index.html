@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tarus Task Manager</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+ New Task
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action ="/new" method ="POST">
+
+ <div class="form-group">
+    <label for="Task Title">Task title</label>
+    <input name = "title" type = "text" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="Enter task title">
+
+  </div>
+            <div class="form-group">
+    <label for="Task Title">Task Description</label>
+    <input name="description" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="Enter task description">
+
+  </div> <div class="form-group">
+    <label for="Task Title">start date</label>
+    <input name='startdate' type="date" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="Enter task title">
+  </div>
+
+       <div class="form-group">
+    <label for="Task Title">end date</label>
+    <input name="enddate" type="date" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="">
+  </div> <div class="form-group">
+
+    <label for="Task Title">status</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="">
+    <select name="status" class="form_control">
+         <option value="pending">pending</option>
+         <option value="complete">complete</option>
+          <option value="cancelled">cancelled</option>
+        </select>
+        </div>
+<button class="btn btn-success" type="submit">Submit</button>
+
+           </form>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+
+<table class="table">
+  <thead>
+
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">title</th>
+      <th scope="col">description</th>
+      <th scope="col">startdate</th>
+        <th scope="col">enddate</th>
+        <th scope="col">status</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for task in task %}
+    <tr>
+      <th scope="row">{{ task.id }}</th>
+      <td>{{ task.title }}</td>
+      <td>{{ task.description }}</td>
+      <td>{{ task.startdate }}</td>
+      <td>{{ task.enddate }}</td>
+      <td>{{ task.status }}</td>
+
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal{{ task.id }}">
+edit
+</button>
+         <!-- Modal -->
+     <div class="modal fade" id="modal{{ task.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Task{{ task.id }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action ="/edit/{{ task.id }}" method ="POST">
+
+ <div class="form-group">
+    <label for="Task Title">Task title</label>
+    <input name = "title" type = "text" class="form-control" value="{{ task.title }}" id="exampleInputEmail1" aria-describedby="" placeholder="Enter task title">
+
+  </div>
+            <div class="form-group">
+    <label for="Task Title">Task Description</label>
+    <input name="description" value="{{ task.description }}" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="Enter task description">
+
+  </div> <div class="form-group">
+    <label for="Task Title">start date</label>
+    <input name="startdate" value="{{ task.startdate }}"type="date" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="Enter task title">
+  </div>
+
+       <div class="form-group">
+    <label for="Task Title">end date</label>
+    <input name="enddate" value="{{ task.enddate }}" type="date" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="">
+  </div> <div class="form-group">
+
+    <label for="Task Title">status</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="" placeholder="">
+    <select name="status" class="form_control">
+         <option value="pending">pending</option>
+         <option value="complete">complete</option>
+          <option value="cancelled">cancelled</option>
+        </select>
+        </div>
+<button class="btn btn-success" type="submit">Submit</button>
+
+           </form>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+
+     <!-- end of modal-->
+
+
+        </td>>
+        <td><a href="/delete/{{ task.id }}"> <button class="btn btn-danger" type ="button">Delete</button> </a> </td>>
+    </tr>
+
+{% endfor %}
+  </tbody>
+</table>
+<img src="{{ graph|safe }}" height="400px"type="image/svg"/>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
